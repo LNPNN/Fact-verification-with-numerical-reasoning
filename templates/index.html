@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>VIFEVER Demo</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" />
+    <link rel="stylesheet" href="{{ url_for('static', filename = '../static/css/all.min.css')}}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename = '../static/css/bootstrap.min.css')}}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename = '../static/slick/slick.css')}}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename = '../static/slick/slick-theme.css')}}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename = '../static/css/magnific-popup.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = '../static/css/templatemo-dream-pulse.css')}}" />
+  </head>
+  <body>
+
+    <main class="container-fluid">
+      <div class="row">
+          <nav id="tmSidebar" class="tm-bg-black-transparent tm-sidebar">
+            <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="tm-sidebar-sticky">
+              <div class="tm-brand-box">
+                <div class="tm-double-border-1">
+                  <div class="tm-double-border-2">
+                    <h1 class="tm-brand text-uppercase">ViFEVER</h1>
+                  </div>
+                </div>
+              </div>
+          </nav>
+
+          <div class="tm-section-wrap bg-white">
+            <section id="clients" class="row tm-section">
+                <div class="col-12 tm-section-pad">
+                <div class="tm-flex-item-left">
+                  <div class="tm-w-80">
+                    <h2 class="tm-color-primary tm-section-title mb-4">Tương tác</h2>
+                  </div>
+                  <hr width="1000%" align="center" />
+                  <div class="text-lg flex items-center mb-4"><svg xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img"
+                      class="-ml-1 mr-1 text-yellow-500" width="1em" height="1em" preserveAspectRatio="xMidYMid meet"
+                      viewBox="0 0 24 24">
+                      <path d="M11 15H6l7-14v8h5l-7 14v-8z" fill="currentColor"></path>
+                    </svg>
+                    Hosted inference API</div>
+
+                  <div class="">
+                    <div class="form-stat">
+                      <form action="{{ url_for('predict') }}" method="post" class="tm-contact-form ">
+
+                        <label class="block ">
+                          <span class="text-sm text-gray-500">Đoạn tiền đề</span>
+                          <input class="mt-1.5 form-input-alt block w-full " placeholder="Viết Đoạn tiền đề ở đây..." type="text"  name="premise"></label>
+
+                        <label class="block ">
+                          <span class="text-sm text-gray-500">Câu khẳng định</span>
+                          <input class="mt-1.5 form-input-alt block w-full " placeholder="Viết câu khẳng định ở đây..." type="text"  name="hypothesis"></label>
+
+                        <label class="block ">
+                          <span class="text-sm text-gray-500">Số bằng chứng</span>
+                          <input class="mt-1.5 form-input-alt block w-full " placeholder="Số bằng chứng từ 1 đến 4" type="text"  name="num_evidence"></label>
+
+                        
+                        <button class="btn-widget w-24 h-10 px-6 " type="submit" value="Predict" onclick="functionToExecute()">Predict</button>
+                
+
+                          <div class="sent-content m-4">
+                              <h1>Kết quả dự đoán</h1>
+                              <p class="output-sent"><strong>Đoạn tiền đề:</strong>  {{ premise_sent }}</p>
+                              <p class="output-sent"><strong>Câu khẳng định:</strong> {{ hypothesis_sent }}</p>
+                              <p class="output-sent"><strong>Bằng chứng:</strong> <ul>
+                                {% for evidence in evidence_sent %}
+                                    <li>{{ evidence }}</li>
+                                {% endfor %}
+                                </ul></p>
+                                <p class="output-sent"><strong>Nhãn dự đoán:</strong> 
+                                  <span class="{% if label == 'Supported' %}supported{% elif label == 'Refuted' %}refuted{% elif label == 'NotenoughInfo' %}notenoughinfo{% endif %}">
+                                    {{ label_sent }}
+                                  </span>
+                                </p>
+                          </div>
+                          <style>
+                            .output-sent, .block {
+                                font-size: 20px; /* Điều chỉnh kích thước chữ theo ý bạn */
+                            }
+                            .btn-widget {
+                            background-color: white; /* Màu nền ban đầu */
+                            color: black; /* Màu chữ ban đầu */
+                            border: 1px solid transparent; /* Viền ban đầu */
+                            border-color: #4CAF50; /* Viền khi hover */
+                            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Hiệu ứng chuyển đổi */
+                          }
+
+                          .btn-widget:hover  {
+                            background-color: #4CAF50; /* Màu nền khi hover */
+                            color: white; /* Màu chữ khi hover */
+                            border-color: #4CAF50; /* Viền khi hover */
+                          }
+
+                            
+                        </style>
+                        
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              </section>
+          </div>
+
+          <div class="tm-section-wrap bg-white">
+        </div>
+        </main>
+      </div>
+        <script src="{{ url_for('static', filename = '../static/js/jquery.min.js')}}"></script>
+    <script src="{{ url_for('static', filename = '../static/js/jquery.singlePageNav.min.js')}}"></script>
+    <script src="{{ url_for('static', filename = '../static/js/parallax.min.js')}}"></script>
+    <script src="{{ url_for('static', filename = '../static/slick/slick.min.js')}}"></script>
+    <script src="{{ url_for('static', filename = '../static/js/jquery.magnific-popup.min.js')}}"></script>
+    <script src="{{ url_for('static', filename = '../static/js/templatemo-scripts.js')}}"></script>
+    <script src="{{ url_for('static', filename = '../static/js/compute.js')}}"></script>
+    </main>
+  </body>
+
+</html>
